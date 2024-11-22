@@ -48,7 +48,7 @@ import jdk.test.lib.jfr.Events;
  * @key jfr
  * @requires vm.hasJFR
  * @library /test/lib
- * @run main/othervm jdk.jfr.event.runtime.TestActiveSettingEvent
+ * @run main/othervm -Xlog:jfr:file=/home/dlb/tmp/logs/jfr.log jdk.jfr.event.runtime.TestActiveSettingEvent
  */
 public final class TestActiveSettingEvent {
 

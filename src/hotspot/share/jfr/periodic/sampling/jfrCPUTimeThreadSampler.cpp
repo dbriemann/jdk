@@ -221,6 +221,7 @@ private:
 // Generation G of an element at position P is the number of full wraps around the array:
 //   G = P / _capacity
 // Generation allows to disambiguate situations when _head and _tail point to the same element.
+// NOTE: when the position wraps the generation will be lower than before.
 //
 // Each element of the array is assigned a state, which encodes full/empty flag in bit 31
 // and the generation G of the element in bits 0..30:
@@ -449,6 +450,7 @@ void JfrCPUTimeThreadSampler::on_javathread_create(JavaThread* thread) {
   }
   if (thread->jfr_thread_local() != nullptr) {
     timer_t timerid;
+	// NOTE: why check thread->jfr_thread_local() != nullptr again?
     if (create_timer_for_thread(thread, timerid) && thread->jfr_thread_local() != nullptr) {
       thread->jfr_thread_local()->set_timerid(timerid);
     }
@@ -480,7 +482,8 @@ void JfrCPUTimeThreadSampler::enroll() {
 }
 
 void JfrCPUTimeThreadSampler::disenroll() {
-  if (Atomic::cmpxchg(&_disenrolled, false, true)) {
+  bool is_enrolled = !Atomic::cmpxchg(&_disenrolled, false, true);
+  if (is_enrolled) {
     log_info(jfr)("Disenrolling CPU thread sampler");
     stop_timer();
     Atomic::store(&_stop_signals, true);

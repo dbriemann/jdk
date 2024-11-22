@@ -33,6 +33,7 @@ import jdk.jfr.internal.settings.CPUThrottleSetting;
 public record TimespanRate(double rate, boolean autoadapt) {
 
     public static TimespanRate of(String text) {
+        // NOTE: does this need a null check of text?
         if (text.equals("off")) {
             text = CPUThrottleSetting.DEFAULT_VALUE;
         }
