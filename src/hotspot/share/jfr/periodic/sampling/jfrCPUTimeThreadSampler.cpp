@@ -344,6 +344,7 @@ public:
     }
     // initialize fresh queue
     for (u4 i = 0; i < max_traces; i++) {
+	  // NOTE: this could go into the above loop.
       _fresh.enqueue(&_traces[i]);
     }
   }
@@ -518,6 +519,7 @@ void JfrCPUTimeThreadSampler::run() {
     period_nanos = period_nanos == 0 ? max_jlong : period_nanos;
     // If both periods are max_jlong, it implies the sampler is in the process of
     // disenrolling. Loop back for graceful disenroll by means of the semaphore.
+	// NOTE: which "both" periods? Why not check period_nanos for 0 and continue in this case?
     if (period_nanos == max_jlong) {
       continue;
     }
