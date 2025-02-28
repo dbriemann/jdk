@@ -3994,7 +3994,29 @@ void LIR_Assembler::get_thread(LIR_Opr result_reg) {
 
 
 void LIR_Assembler::peephole(LIR_List*) {
-  // do nothing for now
+  // Optimize instruction pairs before emitting.
+  LIR_OpList* inst = lir->instructions_list();
+  for (int i = 1; i < inst->length(); i++) {
+    LIR_Op* op = inst->at(i);
+
+    // 2 register-register-moves
+    if (op->code() == lir_move) {
+      LIR_Opr in2  = ((LIR_Op1*)op)->in_opr(),
+              res2 = ((LIR_Op1*)op)->result_opr();
+      if (in2->is_register() && res2->is_register()) {
+        LIR_Op* prev = inst->at(i - 1);
+        if (prev && prev->code() == lir_move) {
+          LIR_Opr in1  = ((LIR_Op1*)prev)->in_opr(),
+                  res1 = ((LIR_Op1*)prev)->result_opr();
+          if (in1->is_same_register(res2) && in2->is_same_register(res1)) {
+            inst->remove_at(i);
+          }
+        }
+      }
+    }
+
+  }
+  return;
 }
 
 void LIR_Assembler::atomic_op(LIR_Code code, LIR_Opr src, LIR_Opr data, LIR_Opr dest, LIR_Opr tmp) {
