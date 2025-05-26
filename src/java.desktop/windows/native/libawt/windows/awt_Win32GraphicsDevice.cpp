@@ -626,6 +626,7 @@ void AwtWin32GraphicsDevice::SetJavaDevice(JNIEnv *env, jobject objPtr)
  */
 void AwtWin32GraphicsDevice::SetScale(float sx, float sy)
 {
+    printf("SetScale: x=%f, y=%f\n", sx, sy);
     scaleX = sx;
     scaleY = sy;
 }
@@ -692,7 +693,9 @@ int AwtWin32GraphicsDevice::ClipRound(double value)
 
 void AwtWin32GraphicsDevice::InitDesktopScales()
 {
+    printf("InitDesktopScales\n");
     if (!disableScaleAutoRefresh) {
+        printf("InitDesktopScales -> !disableScaleAutoRefresh\n");
         float dpiX = -1.0f;
         float dpiY = -1.0f;
         GetScreenDpi(GetMonitor(), &dpiX, &dpiY);
@@ -1456,6 +1459,7 @@ JNIEXPORT void JNICALL
 Java_sun_awt_Win32GraphicsDevice_initNativeScale
 (JNIEnv *env, jobject thisPtr, jint screen)
 {
+    printf("initNativeScale()\n");
     Devices::InstanceAccess devices;
     AwtWin32GraphicsDevice *device = devices->GetDevice(screen);
 

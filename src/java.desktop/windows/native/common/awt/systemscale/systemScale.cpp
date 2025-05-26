@@ -30,6 +30,7 @@
 
 void GetScreenDpi(HMONITOR hmon, float *dpiX, float *dpiY)
 {
+    printf("GetScreenDpi dpiX=%f, dpiY=%f\n", *dpiX, *dpiY);
     unsigned x = 0;
     unsigned y = 0;
 
