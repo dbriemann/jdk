@@ -703,6 +703,8 @@ void AwtWin32GraphicsDevice::InitDesktopScales()
             SetScale(dpiX / 96, dpiY / 96);
         }
     }
+    printf("InitDesktopScales -> scaleX=%f, scaleY=%f\n", GetScaleX(), GetScaleY());
+    printf("InitDesktopScales -> bye\n");
 }
 
 float AwtWin32GraphicsDevice::GetScaleX()
@@ -1459,11 +1461,12 @@ JNIEXPORT void JNICALL
 Java_sun_awt_Win32GraphicsDevice_initNativeScale
 (JNIEnv *env, jobject thisPtr, jint screen)
 {
-    printf("initNativeScale()\n");
+    printf("initNativeScale\n");
     Devices::InstanceAccess devices;
     AwtWin32GraphicsDevice *device = devices->GetDevice(screen);
 
     if (device != NULL) {
         device->InitDesktopScales();
     }
+    printf("initNativeScale -> bye\n");
 }
