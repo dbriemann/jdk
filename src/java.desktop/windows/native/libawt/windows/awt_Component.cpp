@@ -2647,7 +2647,8 @@ jint AwtComponent::GetShiftKeyLocation(UINT vkey, UINT flags)
         return java_awt_event_KeyEvent_KEY_LOCATION_RIGHT;
     }
 
-    DASSERT(false);
+    // NOTE: disable for debugging
+    // DASSERT(false);
     // Note: the above should not fail on NT (or 2000)
 
     // default value
