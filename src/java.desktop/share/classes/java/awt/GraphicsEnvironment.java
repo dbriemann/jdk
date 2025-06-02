@@ -146,12 +146,13 @@ public abstract class GraphicsEnvironment {
                 System.out.println("getHeadlessProperty() -> null");
                 headless = defaultHeadless =
                     PlatformGraphicsInfo.getDefaultHeadlessProperty();
-                System.out.println("getHeadlessProperty() -> if " + headless);
+                System.out.println("getHeadlessProperty() [if null]-> default = " + headless);
             } else {
                 headless = Boolean.valueOf(nm);
-                System.out.println("getHeadlessProperty() -> else " + headless);
+                System.out.println("getHeadlessProperty() [else]-> nm = " + headless);
             }
         }
+        System.out.println("getHeadlessProperty() -> headless = ", headless);
         return headless;
     }
 
