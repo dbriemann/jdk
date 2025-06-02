@@ -152,7 +152,7 @@ public abstract class GraphicsEnvironment {
                 System.out.println("getHeadlessProperty() [else]-> nm = " + headless);
             }
         }
-        System.out.println("getHeadlessProperty() -> headless = ", headless);
+        System.out.println("getHeadlessProperty() -> headless = " + headless);
         return headless;
     }
 
