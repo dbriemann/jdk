@@ -55,6 +55,7 @@ public final class PlatformGraphicsInfo {
     }
 
     public static boolean getDefaultHeadlessProperty() {
+        System.out.println("getDefaultHeadlessProperty() -> hasDisplays = " + hasDisplays);
         // If we don't find usable displays, we run headless.
         return !hasDisplays;
     }
