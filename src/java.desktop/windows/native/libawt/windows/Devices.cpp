@@ -112,11 +112,11 @@ static BOOL IsValidMonitor(HMONITOR hMon)
         return FALSE;
     }
 
+    printf("IsValidMonitor() -> bye\n");
+
     ::DeleteDC(hDC);
     return TRUE;
 }
-
-printf("IsValidMonitor() -> bye\n");
 
 // Callback for CountMonitors below
 static BOOL WINAPI clb_fCountMonitors(HMONITOR hMon, HDC hDC, LPRECT rRect, LPARAM lpMonitorCounter)
