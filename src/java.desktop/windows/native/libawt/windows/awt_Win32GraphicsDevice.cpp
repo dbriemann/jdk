@@ -794,7 +794,10 @@ void AwtWin32GraphicsDevice::ResetAllDesktopScales()
     Devices::InstanceAccess devices;
     int devicesNum = devices->GetNumDevices();
     for (int deviceIndex = 0; deviceIndex < devicesNum; deviceIndex++) {
-        devices->GetDevice(deviceIndex)->InitDesktopScales();
+        auto device = devices->GetDevice(deviceIndex);
+        if (device != NULL) {
+            device->InitDesktopScales();
+        }
     }
 }
 
