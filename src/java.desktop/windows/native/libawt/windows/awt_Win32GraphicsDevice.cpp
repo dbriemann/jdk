@@ -76,6 +76,7 @@ AwtWin32GraphicsDevice::AwtWin32GraphicsDevice(int screen,
     this->devicesArray = arr;
     this->scaleX = 1;
     this->scaleY = 1;
+    printf("AwtWin32GraphicsDevice::constructor\n");
     disableScaleAutoRefresh = FALSE;
     javaDevice = NULL;
     colorData = new ImgColorData;
@@ -719,6 +720,7 @@ float AwtWin32GraphicsDevice::GetScaleY()
 
 void AwtWin32GraphicsDevice::DisableScaleAutoRefresh()
 {
+    printf("AwtWin32GraphicsDevice::DisableScaleAutoRefresh()\n");
     disableScaleAutoRefresh = TRUE;
 }
 
