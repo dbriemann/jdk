@@ -204,9 +204,11 @@ BOOL Devices::UpdateInstance(JNIEnv *env)
     J2dTraceLn(J2D_TRACE_INFO, "Devices::UpdateInstance");
 
     int numScreens = CountMonitors();
+    printf("UpdateInstance() -> screens = %d\n", numScreens);
     HMONITOR *monHds = (HMONITOR *)SAFE_SIZE_ARRAY_ALLOC(safe_Malloc,
             numScreens, sizeof(HMONITOR));
     if (numScreens != CollectMonitors(monHds, numScreens)) {
+        printf("UpdateInstance() -> collect = %d\n", CollectMonitors(monHds, numScreens));
         J2dRlsTraceLn(J2D_TRACE_ERROR,
                       "Devices::UpdateInstance: Failed to get all "\
                       "monitor handles.");
@@ -226,9 +228,11 @@ BOOL Devices::UpdateInstance(JNIEnv *env)
     int i;
     for (i = 0; i < numScreens; ++i) {
         J2dTraceLn2(J2D_TRACE_VERBOSE, "  hmon[%d]=0x%x", i, monHds[i]);
+        printf("UpdateInstance()->  hmon[%d]=0x%x\n", i, monHds[i]);
         rawDevices[i] = new AwtWin32GraphicsDevice(i, monHds[i], newDevices);
     }
     for (i = 0; i < numScreens; ++i) {
+        printf("UpdateInstance()-> num screen = %d Initialize()\n", i);
         rawDevices[i]->Initialize();
     }
     {
@@ -245,11 +249,13 @@ BOOL Devices::UpdateInstance(JNIEnv *env)
             // that was removed), but it will have to do for now.
             int oldNumScreens = oldDevices->GetNumDevices();
             int newNumScreens = theInstance->GetNumDevices();
+            printf("UpdateInstance()-> oldNumScreens = %d, newNumScreens = %d\n", oldNumScreens, newNumScreens);
             J2dTraceLn(J2D_TRACE_VERBOSE, "  Invalidating removed devices");
             for (int i = newNumScreens; i < oldNumScreens; i++) {
                 // removed device, needs to be invalidated
                 J2dTraceLn1(J2D_TRACE_WARNING,
                             "Devices::UpdateInstance: device removed: %d", i);
+                printf("UpdateInstance()-> num = %d -> invalidated\n", i);
                 oldDevices->GetDevice(i)->Invalidate(env);
             }
             // Now that we have a new array in place, remove this (possibly the
