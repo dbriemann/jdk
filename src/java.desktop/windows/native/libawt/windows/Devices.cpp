@@ -116,9 +116,10 @@ static BOOL IsValidMonitor(HMONITOR hMon)
 // Callback for CountMonitors below
 static BOOL WINAPI clb_fCountMonitors(HMONITOR hMon, HDC hDC, LPRECT rRect, LPARAM lpMonitorCounter)
 {
-    if (IsValidMonitor(hMon)) {
-        (*((int *)lpMonitorCounter))++;
-    }
+    // TODO: disable IsValidMonitor check.
+    // if (IsValidMonitor(hMon)) {
+    (*((int *)lpMonitorCounter))++;
+    // }
 
     return TRUE;
 }
