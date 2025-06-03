@@ -95,16 +95,19 @@ typedef struct {
 // Only monitors where CreateDC does not fail are valid
 static BOOL IsValidMonitor(HMONITOR hMon)
 {
+    printf("IsValidMonitor()\n");
     MONITORINFOEX mieInfo;
     memset((void*)(&mieInfo), 0, sizeof(MONITORINFOEX));
     mieInfo.cbSize = sizeof(MONITORINFOEX);
     if (!::GetMonitorInfo(hMon, (LPMONITORINFOEX)(&mieInfo))) {
+        printf("IsValidMonitor() -> GetMonitorInfo failed for handle %p\n", hMon);
         J2dTraceLn1(J2D_TRACE_INFO, "Devices::IsValidMonitor: GetMonitorInfo failed for monitor with handle %p", hMon);
         return FALSE;
     }
 
     HDC hDC = CreateDC(mieInfo.szDevice, NULL, NULL, NULL);
     if (NULL == hDC) {
+        printf("IsValidMonitor() -> CreateDC failed for handle %p, %S\n", hMon,mieInfo.szDevice);
         J2dTraceLn2(J2D_TRACE_INFO, "Devices::IsValidMonitor: CreateDC failed for monitor with handle %p, device: %S", hMon, mieInfo.szDevice);
         return FALSE;
     }
@@ -112,6 +115,8 @@ static BOOL IsValidMonitor(HMONITOR hMon)
     ::DeleteDC(hDC);
     return TRUE;
 }
+
+printf("IsValidMonitor() -> bye\n");
 
 // Callback for CountMonitors below
 static BOOL WINAPI clb_fCountMonitors(HMONITOR hMon, HDC hDC, LPRECT rRect, LPARAM lpMonitorCounter)
@@ -134,25 +139,31 @@ int WINAPI CountMonitors(void)
 // Callback for CollectMonitors below
 static BOOL WINAPI clb_fCollectMonitors(HMONITOR hMon, HDC hDC, LPRECT rRect, LPARAM lpMonitorData)
 {
+    printf("clb_fCollectMonitors()\n");
     MonitorData* pMonitorData = (MonitorData *)lpMonitorData;
     if ((pMonitorData->monitorCounter < pMonitorData->monitorLimit) && (IsValidMonitor(hMon))) {
         pMonitorData->hmpMonitors[pMonitorData->monitorCounter] = hMon;
+        printf("CollectMonitors() -> increase counter\n");
         pMonitorData->monitorCounter++;
     }
 
+    printf("clb_fCollectMonitors() -> bye\n");
     return TRUE;
 }
 
 static int WINAPI CollectMonitors(HMONITOR* hmpMonitors, int nNum)
 {
+    printf("CollectMonitors()\n");
     if (NULL != hmpMonitors) {
         MonitorData monitorData;
         monitorData.monitorCounter = 0;
         monitorData.monitorLimit = nNum;
         monitorData.hmpMonitors = hmpMonitors;
         ::EnumDisplayMonitors(NULL, NULL, clb_fCollectMonitors, (LPARAM)&monitorData);
+        printf("CollectMonitors() -> return counter = %d \n", monitorData.monitorCounter);
         return monitorData.monitorCounter;
     } else {
+        printf("CollectMonitors() -> return 0\n");
         return 0;
     }
 }
