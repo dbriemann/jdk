@@ -228,7 +228,7 @@ BOOL Devices::UpdateInstance(JNIEnv *env)
     int i;
     for (i = 0; i < numScreens; ++i) {
         J2dTraceLn2(J2D_TRACE_VERBOSE, "  hmon[%d]=0x%x", i, monHds[i]);
-        printf("UpdateInstance()->  hmon[%d]=0x%x\n", i, monHds[i]);
+        printf("UpdateInstance()->  hmon[%d]\n", i);
         rawDevices[i] = new AwtWin32GraphicsDevice(i, monHds[i], newDevices);
     }
     for (i = 0; i < numScreens; ++i) {
