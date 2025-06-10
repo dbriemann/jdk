@@ -694,7 +694,7 @@ int AwtWin32GraphicsDevice::ClipRound(double value)
 
 void AwtWin32GraphicsDevice::InitDesktopScales()
 {
-    printf("InitDesktopScales\n");
+    printf("InitDesktopScales (this: %p)\n", this);
     if (!disableScaleAutoRefresh) {
         printf("InitDesktopScales -> !disableScaleAutoRefresh\n");
         float dpiX = -1.0f;
@@ -1471,6 +1471,7 @@ Java_sun_awt_Win32GraphicsDevice_initNativeScale
     AwtWin32GraphicsDevice *device = devices->GetDevice(screen);
 
     if (device != NULL) {
+        printf("initNativeScale -> device != NULL -> %p\n", device);
         device->InitDesktopScales();
     }
     printf("initNativeScale -> bye\n");
