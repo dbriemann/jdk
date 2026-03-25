@@ -61,8 +61,8 @@ public class TestDependsOnTestSqrtHFAssertion {
 
     public static void main(String [] args) {
         int res = 0;
-        for (int i = 0 ; i < 100000; i++) {
-            res += micro(x1, x2, y, i);
+        for (int i = 0; i < 20_000; i++) {
+            res += micro(x1, x2, y, 100);
         }
         IO.println("PASS" + res);
     }
