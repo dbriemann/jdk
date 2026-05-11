@@ -1435,6 +1435,8 @@ void MachConstantBaseNode::postalloc_expand(GrowableArray <Node *> *nodes, Phase
   m1->_opnds[0] = op_dst;
   m2->_opnds[0] = op_dst;
   m2->_opnds[1] = op_dst;
+  m1->_bottom_type = TypeRawPtr::NOTNULL;
+  m2->_bottom_type = TypeRawPtr::NOTNULL;
   ra_->set_pair(m1->_idx, ra_->get_reg_second(this), ra_->get_reg_first(this));
   ra_->set_pair(m2->_idx, ra_->get_reg_second(this), ra_->get_reg_first(this));
   nodes->push(m1);
@@ -2904,6 +2906,10 @@ encode %{
       m1->_const_toc_offset = -1;
       m2->_const_toc_offset_hi_node = m1;
 
+      // Propagate bottom type from the original node.
+      m1->_bottom_type = bottom_type();
+      m2->_bottom_type = bottom_type();
+
       // Register allocation for new nodes.
       ra_->set_pair(m1->_idx, ra_->get_reg_second(this), ra_->get_reg_first(this));
       ra_->set_pair(m2->_idx, ra_->get_reg_second(this), ra_->get_reg_first(this));
@@ -2921,6 +2927,9 @@ encode %{
       m2->_opnds[0] = new iRegPdstOper(); // dst
       m2->_opnds[1] = op_src;             // src
       m2->_opnds[2] = new iRegPdstOper(); // toc
+
+      // Propagate bottom type from the original node.
+      m2->_bottom_type = bottom_type();
 
       // Register allocation for new nodes.
       ra_->set_pair(m2->_idx, ra_->get_reg_second(this), ra_->get_reg_first(this));
@@ -6735,6 +6744,7 @@ instruct decodeN_Disjoint_notNull_Ex(iRegPdst dst, iRegNsrc src) %{
     loadBaseNode *n1 = new loadBaseNode();
     n1->add_req(nullptr);
     n1->_opnds[0] = op_dst;
+    n1->_bottom_type = TypeRawPtr::NOTNULL;
 
     decodeN_mergeDisjointNode *n2 = new decodeN_mergeDisjointNode();
     n2->add_req(n_region, n_src, n1);
@@ -6767,6 +6777,7 @@ instruct decodeN_Disjoint_isel_Ex(iRegPdst dst, iRegNsrc src, flagsReg crx) %{
     loadBaseNode *n1 = new loadBaseNode();
     n1->add_req(nullptr);
     n1->_opnds[0] = op_dst;
+    n1->_bottom_type = TypeRawPtr::NOTNULL;
 
     cmpN_reg_imm0Node *n_compare  = new cmpN_reg_imm0Node();
     n_compare->add_req(n_region, n_src);
