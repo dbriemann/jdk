@@ -2907,7 +2907,8 @@ encode %{
       m2->_const_toc_offset_hi_node = m1;
 
       // Propagate bottom type from the original node.
-      m1->_bottom_type = bottom_type();
+      // m1 is an intermediate computation (toc + hi_offset), not a valid oop.
+      m1->_bottom_type = TypeRawPtr::BOTTOM;
       m2->_bottom_type = bottom_type();
 
       // Register allocation for new nodes.
