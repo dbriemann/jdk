@@ -668,13 +668,6 @@ Java_sun_nio_ch_Net_joinOrDrop4(JNIEnv *env, jobject this, jboolean join, jobjec
         optlen = sizeof(mreq);
     } else {
 
-#ifdef _AIX
-        /* check AIX for support of source filtering */
-        if (isSourceFilterSupported() != JNI_TRUE){
-            return IOS_UNAVAILABLE;
-        }
-#endif
-
         mreq_source.imr_multiaddr.s_addr = htonl(group);
         mreq_source.imr_sourceaddr.s_addr = htonl(source);
         mreq_source.imr_interface.s_addr = htonl(interf);
@@ -720,13 +713,6 @@ Java_sun_nio_ch_Net_blockOrUnblock4(JNIEnv *env, jobject this, jboolean block, j
     struct ip_mreq_source mreq_source;
     int n;
     int opt = (block) ? IP_BLOCK_SOURCE : IP_UNBLOCK_SOURCE;
-
-#ifdef _AIX
-    /* check AIX for support of source filtering */
-    if (isSourceFilterSupported() != JNI_TRUE){
-        return IOS_UNAVAILABLE;
-    }
-#endif
 
     mreq_source.imr_multiaddr.s_addr = htonl(group);
     mreq_source.imr_sourceaddr.s_addr = htonl(source);
