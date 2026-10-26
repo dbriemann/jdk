@@ -6160,7 +6160,7 @@ instruct decodeN_Disjoint_notNull_Ex(iRegPdst dst, iRegNsrc src) %{
   ins_pipe(pipe_class_default);
 %}
 
-instruct decodeN_Disjoint_isel_Ex(iRegPdst dst, iRegNsrc src, flagsReg crx) %{
+instruct decodeN_Disjoint_isel(iRegPdst dst, iRegNsrc src, flagsReg crx) %{
   match(Set dst (DecodeN src));
   effect(TEMP_DEF dst, TEMP crx);
   predicate((n->bottom_type()->is_oopptr()->ptr() != TypePtr::NotNull &&
