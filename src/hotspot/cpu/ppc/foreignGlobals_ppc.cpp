@@ -109,8 +109,7 @@ static void move_reg64(MacroAssembler* masm, int out_stk_bias,
       // FP arguments can get passed in GP reg! (Only in Upcall with HFA usage.)
       assert(from_reg.segment_mask() == to_reg.segment_mask(), "sanity");
       if (to_reg.segment_mask() == REG32_MASK) {
-        __ stw(as_Register(from_reg), -8, R1_SP);
-        __ lfs(as_FloatRegister(to_reg), -8, R1_SP); // convert to double precision format
+        __ i2f(as_FloatRegister(to_reg), as_Register(from_reg));
       } else {
         __ mtfprd(as_FloatRegister(to_reg), as_Register(from_reg));
       }
